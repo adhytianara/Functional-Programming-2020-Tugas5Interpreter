@@ -51,6 +51,7 @@ loop = do
        (":d":e:_)        -> do outputStrLn $ debruijnIndex e; loop
        (":eq":e1:e2:_) -> do outputStrLn $ alphaEq e1 e2; loop
        ("get":_)       -> do v <- lift get; outputStrLn $ "The reduction strategy is " ++ show v; loop
-       [expr]          -> do s <- lift get; outputStrLn (evaluate expr s); loop
+       [expr]          -> do s <- lift get; outputStrLn (evaluate expr s); outputStrLn (show (length (splitOn "(" (last (splitOn "\n" (evaluate expr s)))))); loop
+       -- [expr]          -> do s <- lift get; outputStrLn (evaluate expr s); loop
        (e1:e2:_)       -> do outputStrLn (explainExpr e1 e2); loop
        _               -> do outputStrLn "huh?"; loop

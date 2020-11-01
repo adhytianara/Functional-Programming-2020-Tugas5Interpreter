@@ -1,5 +1,6 @@
 module Parser (parseExpr) where
 
+import ChurchNumeral
 import Syntax
 import Text.ParserCombinators.Parsec
 
@@ -40,4 +41,7 @@ lambdaExpr  = do
                   return $ foldl1 App terms
 
 parseExpr :: String -> Either ParseError LExpr
-parseExpr = parse lambdaExpr ""
+parseExpr input 
+    | (head input) `elem` ['0'..'9'] = parse lambdaExpr "" (convertToChurchNumeral input)
+    | otherwise = parse lambdaExpr "" input
+
